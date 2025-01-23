@@ -48,19 +48,29 @@ enum ElementsIndex {
 };
 
 int executeProg(vector<int> program) {
-    int temporary = 0;
+    int intBuffer = 0;
+    bool boolBuffer = false;
+    string strBuffer = "";
+
     const int READ_DEFAULT = -1;
     int readMode = READ_DEFAULT; // -1 is default
     for (int i = 0; i < program.size(); i++) {
         switch (readMode) {
-        case -1:
+        case READ_DEFAULT:
             switch (program[i]) {
             case -1:
                 cout << "\n Syntax Error: The element " << program[i] << " does not exit. Please check your spelling.";
                 return -1;
                 break;
+            case H:
+                strBuffer = strBuffer + (char)intBuffer;
+                break;
             case He:
+                intBuffer = 0;
                 readMode = He;
+                break;
+            case C:
+                cout  <<  strBuffer;
                 break;
             default:
                 cout << "\n Syntax Error: The element " << program[i] << " is unused";
@@ -70,15 +80,14 @@ int executeProg(vector<int> program) {
             break;
         case He:
             if (program[i] != He) {
-                temporary += program[i];
-            } else if (temporary != 0) {
-                cout << temporary << endl;
-                temporary = 0;
-                readMode = 0;
+                intBuffer += program[i];
+            } else if (intBuffer != 0) {
+                cout << "#"<< intBuffer << endl;
+                readMode = READ_DEFAULT;
             }
             break;
         default:
-            cout << "Code Error:\n" << readMode << "; " << temporary;
+            cout << "Code Error:\n" << readMode << "; " << intBuffer << endl;
         }
     }
     return 0;
