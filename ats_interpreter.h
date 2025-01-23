@@ -26,7 +26,7 @@ const array<string, 119> elements = {
 };
 
 enum ElementsIndex {
-    _0, H, He,
+    NONE, H, He,
     Li, Be,
     B,  C,  N,  O,  F,  Ne,
     Na, Mg,
@@ -47,28 +47,39 @@ enum ElementsIndex {
     Nh, Fl, Mc, Lv, Ts, Og,
 };
 
-const int ERROR = -0x7FFFFFFF;
-
 int executeProg(vector<int> program) {
     int temporary = 0;
-    for (int i = 0; i > program.size(); i++) {
-        switch (program[i]) {
+    const int READ_DEFAULT = -1;
+    int readMode = READ_DEFAULT; // -1 is default
+    for (int i = 0; i < program.size(); i++) {
+        switch (readMode) {
+        case -1:
+            switch (program[i]) {
             case -1:
-                cout << "Syntax Error: The element " << program[1] << " does not exit. Please check your spelling.";
-                return ERROR;
+                cout << "\n Syntax Error: The element " << program[i] << " does not exit. Please check your spelling.";
+                return -1;
                 break;
             case He:
-                for (i; program[i] != He; i++) {
-                    temporary += program[i];
-                }
-                cout << temporary;
-                return temporary;
+                readMode = He;
                 break;
             default:
-                cout << "Syntax Error: The element " << program[1] << " is unused";
-                return ERROR;
+                cout << "\n Syntax Error: The element " << program[i] << " is unused";
+                return -2;
                 break;
             }
+            break;
+        case He:
+            if (program[i] != He) {
+                temporary += program[i];
+            } else if (temporary != 0) {
+                cout << temporary << endl;
+                temporary = 0;
+                readMode = 0;
+            }
+            break;
+        default:
+            cout << "Code Error:\n" << readMode << "; " << temporary;
         }
+    }
     return 0;
 }

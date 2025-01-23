@@ -18,15 +18,20 @@ int atomicNum(string input) {
 vector<int> read(string input) {
     vector<int> output;
     string buffer;
+    bool isComment = false;
 
     for (int i = 0; i < input.size(); i++) {
-        if (isupper(input[i]) && buffer != "") {
-            output.push_back(atomicNum(buffer));
-            buffer = "";
-            buffer += input[i];
-        } else if (!isspace(input[i])) {
-            buffer += input[i];
-        }
+        if (input[i] == '#') isComment = true;
+
+        if (!isComment) {
+            if (isupper(input[i]) && buffer != "") {
+                output.push_back(atomicNum(buffer));
+                buffer = "";
+                buffer += input[i];
+            } else if (!isspace(input[i])) {
+                buffer += input[i];
+            }
+        } else if (input[i] == '\n') isComment = false;
     }
     output.push_back(atomicNum(buffer));
     return output;
