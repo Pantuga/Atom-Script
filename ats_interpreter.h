@@ -82,12 +82,11 @@ int executeProg(vector<int> program) {
             if (program[i] != He) {
                 intBuffer += program[i];
             } else if (intBuffer != 0) {
-                cout << "#"<< intBuffer << endl;
                 readMode = READ_DEFAULT;
             }
             break;
         default:
-            cout << "Code Error:\n" << readMode << "; " << intBuffer << endl;
+            cout << "Code Error: " << readMode << "_" << intBuffer << endl << "Please report to github";
         }
     }
     return 0;

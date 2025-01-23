@@ -1,0 +1,15 @@
+He Hf He     # each element's atomic number between He's get sent to the intBuffer
+H            # H adds the number in intBuffer to strBuffer as a character
+He Md He H
+He Hs He H
+He Hs He H
+He Rg He H
+He Ru He H
+He Ge He H
+He Fr He H
+He Rg He H
+He Fl He H
+He Hs He H
+He Fm He H
+He As He H   # these make the string "Hello, World!"
+C            # C prints the strBuffer
