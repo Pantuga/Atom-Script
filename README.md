@@ -23,15 +23,11 @@ All the commands do is change or read the values in these variables in some way.
 
 ### H (element no. 1)
 
-`strBuffer = strBuffer + (char)intBuffer;`
-
 The `H` command adds the value in `intBuffer` to the `strBuffer` string as a character.
 
 **Note: the value coresponds to the ASCII charcater with that value**
 
 ### He (element no. 2)
-
-`intBuffer += program[i];`
 
 The `He _ He` command changes the `intBuffer` to the sum of every atomic number in between the two `He`s.
 
@@ -40,7 +36,5 @@ The `He _ He` command changes the `intBuffer` to the sum of every atomic number 
 `He Li He` would make `intBuffer = 3`, as the atom number of lithium is 3.
 
 ### C (element no. 6)
-
-`cout << strBuffer;`
 
 The `C` command simply prints the value of `strBuffer` to the console.
