@@ -163,6 +163,12 @@ int execute(vector<int> program) {
         default:
             cout << "Code Error: " << readMode << endl << "Please report to github";
         }
+        if (pointer > intMemory.size() - 1) {
+            for (int i = intMemory.size() - 1; i <= pointer; i++)
+                intMemory.push_back(0);
+                boolMemory.push_back(false);
+                strMemory.push_back("");
+        }
     }
     return 0;
 }
