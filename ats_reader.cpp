@@ -5,7 +5,7 @@
 #include "ctype.h" // isspace() function
 #include "fstream" // for file reading
 #include "sstream" // "
-#include "ats_interpreter.h" // where the array "elements" is
+#include "ats_interpreter.hpp" // where the array "elements" is
 using namespace std;
 
 int atomicNum(string input) {
