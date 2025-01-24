@@ -54,7 +54,7 @@ int execute(vector<int> program) {
     vector<string> strMemory = {""};
     // position of the vectors to be read
     int privateMemory;
-    int iterator = 0;
+    int pointer = 0;
 
     const int READ_DEFAULT = -1;
     int readMode = READ_DEFAULT; // -1 is default
@@ -64,52 +64,52 @@ int execute(vector<int> program) {
             switch (program[i]) { // Other syntax errors are handeled by the reader
 
             case H: // adds intMemory to strMemory as a character
-                strMemory[iterator] += (char)intMemory[iterator];
+                strMemory[pointer] += (char)intMemory[pointer];
                 break;
 
             case He: //() sets intMemory to the value inside
-                intMemory[iterator] = 0;
+                intMemory[pointer] = 0;
                 readMode = He;
                 break;
             
             case Ne: //() "He [...] He H" withput altering intMemory
-                privateMemory = intMemory[iterator];
+                privateMemory = intMemory[pointer];
                 readMode = Ne;
                 break;
 
-            case Li: // increments iterator by 1
-                iterator += 1;
+            case Li: // increments pointer by 1
+                pointer += 1;
                 break;
 
-            case Be: // decrements iterator by 1
-                iterator -= 1;
+            case Be: // decrements pointer by 1
+                pointer -= 1;
                 break;
 
-            case Na: //() sets iterator to the value inside
-                iterator = 0;
+            case Na: //() sets pointer to the value inside
+                pointer = 0;
                 readMode = Na;
                 break;
 
-            case Mg: // sets iterator to 0
-                iterator = 0;
+            case Mg: // sets pointer to 0
+                pointer = 0;
                 break;
 
-            case K: //() increments iterator by value inside
-                privateMemory = iterator;
+            case K: //() increments pointer by value inside
+                privateMemory = pointer;
                 readMode = K;
                 break;
 
-            case Ca: //() decrements iterator by value inside
-                privateMemory = iterator;
+            case Ca: //() decrements pointer by value inside
+                privateMemory = pointer;
                 readMode = Ca;
                 break;
 
             case C: // prints strMemory
-                cout << strMemory[iterator];
+                cout << strMemory[pointer];
                 break;
             
             case O: // asks for input, stores it in strMemory
-                cin >> strMemory[iterator];
+                cin >> strMemory[pointer];
                 break;
 
             default:
@@ -121,42 +121,42 @@ int execute(vector<int> program) {
 
         case He:
             if (program[i] != He) {
-                intMemory[iterator] += program[i];
-            } else if (intMemory[iterator] != 0) {
+                intMemory[pointer] += program[i];
+            } else if (intMemory[pointer] != 0) {
                 readMode = READ_DEFAULT;
             }
             break;
 
         case Ne:
             if (program[i] != Ne) {
-                intMemory[iterator] += program[i];
-            } else if (intMemory[iterator] != privateMemory) {
-                strMemory[iterator] += (char)intMemory[iterator];
-                intMemory[iterator] = privateMemory;
+                intMemory[pointer] += program[i];
+            } else if (intMemory[pointer] != privateMemory) {
+                strMemory[pointer] += (char)intMemory[pointer];
+                intMemory[pointer] = privateMemory;
                 readMode = READ_DEFAULT;
             }
             break;
 
         case Na:
             if (program[i] != Na) {
-                iterator += program[i];
-            } else if (iterator != 0) {
+                pointer += program[i];
+            } else if (pointer != 0) {
                 readMode = READ_DEFAULT;
             }
             break;
 
         case K:
             if (program[i] != K) {
-                iterator += program[i];
-            } else if (iterator != privateMemory) {
+                pointer += program[i];
+            } else if (pointer != privateMemory) {
                 readMode = READ_DEFAULT;
             }
             break;
 
         case Ca:
             if (program[i] != Ca) {
-                iterator -= program[i];
-            } else if (iterator != privateMemory) {
+                pointer -= program[i];
+            } else if (pointer != privateMemory) {
                 readMode = READ_DEFAULT;
             }
             break;
