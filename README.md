@@ -4,7 +4,7 @@ An esotheric programming language writen only with elements from the periodic ta
 
 ## Version
 
-0.0.2 - First tests
+0.0.2a - First tests
 
 # The Language
 
