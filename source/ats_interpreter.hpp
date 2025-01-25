@@ -1,60 +1,19 @@
 #include "iostream"
 #include "vector"
 #include "array"
+#include "elements.hpp"
 using namespace std;
-
-const array<string, 119> elements = {
-    "", "H", "He",
-    "Li", "Be", 
-    "B", "C", "N", "O", "F", "Ne",
-    "Na", "Mg",
-    "Al", "Si", "P", "S", "Cl", "Ar",
-    "K", "Ca",
-    "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn",
-    "Ga", "Ge", "As", "Se", "Br", "Kr",
-    "Rb", "Sr",
-    "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd",
-    "In", "Sn", "Sb", "Te", "I", "Xe",
-    "Cs", "Ba",
-    "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb",
-    "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
-    "Tl", "Pb", "Bi", "Po", "At", "Rn",
-    "Fr", "Ra",
-    "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr",
-    "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn",
-    "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
-};
-
-enum ElementsIndex {
-    NONE, H, He,
-    Li, Be,
-    B,  C,  N,  O,  F,  Ne,
-    Na, Mg,
-    Al, Si, P,  S,  Cl, Ar,
-    K,  Ca,
-    Sc, Ti, V,  Cr, Mn, Fe, Co, Ni, Cu, Zn,
-    Ga, Ge, As, Se, Br, Kr,
-    Rb, Sr,
-    Y,  Zr, Nb, Mo, Tc, Ru, Rh, Pd, Ag, Cd,
-    In, Sn, Sb, Te, I,  Xe,
-    Cs, Ba,
-    La, Ce, Pr, Nd, Pm, Sm, Eu, Gd, Tb, Dy, Ho, Er, Tm, Yb,
-    Lu, Hf, Ta, W,  Re, Os, Ir, Pt, Au, Hg,
-    Tl, Pb, Bi, Po, At, Rn,
-    Fr, Ra,
-    Ac, Th, Pa, U,  Np, Pu, Am, Cm, Bk, Cf, Es, Fm, Md, No, Lr,
-    Rf, Db, Sg, Bh, Hs, Mt, Ds, Rg, Cn,
-    Nh, Fl, Mc, Lv, Ts, Og,
-};
 
 int execute(vector<int> program) {
     // where variables are stored
-    vector<int> intMemory = {0};
+    vector<int> numMemory = {0};
     vector<bool> boolMemory = {false};
     vector<string> strMemory = {""};
     // position of the vectors to be read
-    int privateMemory;
     int pointer = 0;
+    int intPrivateMemory;
+    string strPrivateMemory;
+    
 
     const int READ_DEFAULT = -1;
     int readMode = READ_DEFAULT; // -1 is default
@@ -63,17 +22,17 @@ int execute(vector<int> program) {
         case READ_DEFAULT:
             switch (program[i]) { // Other syntax errors are handeled by the reader
 
-            case H: // adds intMemory to strMemory as a character
-                strMemory[pointer] += (char)intMemory[pointer];
+            case H: // adds numMemory to strMemory as a character
+                strMemory[pointer] += (char)numMemory[pointer];
                 break;
 
-            case He: //() sets intMemory to the value inside
-                intMemory[pointer] = 0;
+            case He: //() sets numMemory to the value inside
+                numMemory[pointer] = 0;
                 readMode = He;
                 break;
             
-            case Ne: //() "He [...] He H" withput altering intMemory
-                privateMemory = intMemory[pointer];
+            case Ne: //() "He [...] He H" withput altering numMemory
+                intPrivateMemory = numMemory[pointer];
                 readMode = Ne;
                 break;
 
@@ -95,12 +54,12 @@ int execute(vector<int> program) {
                 break;
 
             case K: //() increments pointer by value inside
-                privateMemory = pointer;
+                intPrivateMemory = pointer;
                 readMode = K;
                 break;
 
             case Ca: //() decrements pointer by value inside
-                privateMemory = pointer;
+                intPrivateMemory = pointer;
                 readMode = Ca;
                 break;
 
@@ -108,7 +67,23 @@ int execute(vector<int> program) {
                 cout << strMemory[pointer];
                 break;
             
-            case O: // asks for input, stores it in strMemory
+            case F: // v0.0.3 resets the strMemory
+                strMemory[pointer] = "";
+                break;
+
+            case B: // v0.0.3 asks for bool input
+                cin >> strPrivateMemory;
+
+                if (strPrivateMemory[0] == 'n' || strPrivateMemory == "false" || strPrivateMemory == "0") {
+                    boolMemory[pointer] = false;
+                } else boolMemory[pointer] = true;
+                break;
+
+            case N: // v0.0.3 asks for int input (DANGEROUS!!!)
+                cin >> numMemory[pointer];
+                break;
+
+            case O: // asks for string input (works weird)
                 cin >> strMemory[pointer];
                 break;
 
@@ -121,26 +96,28 @@ int execute(vector<int> program) {
 
         case He:
             if (program[i] != He) {
-                intMemory[pointer] += program[i];
-            } else if (intMemory[pointer] != 0) {
+                numMemory[pointer] += program[i];
+            } else if (numMemory[pointer] != 0) {
                 readMode = READ_DEFAULT;
             }
             break;
 
         case Ne:
             if (program[i] != Ne) {
-                intMemory[pointer] += program[i];
-            } else if (intMemory[pointer] != privateMemory) {
-                strMemory[pointer] += (char)intMemory[pointer];
-                intMemory[pointer] = privateMemory;
+                numMemory[pointer] = program[i];
+            }
+            if (numMemory[pointer] != intPrivateMemory) {
+                strMemory[pointer] += (char)numMemory[pointer];
+                numMemory[pointer] = intPrivateMemory;
                 readMode = READ_DEFAULT;
             }
             break;
 
         case Na:
             if (program[i] != Na) {
-                pointer += program[i];
-            } else if (pointer != 0) {
+                pointer = program[i];
+            }
+            if (pointer != 0) {
                 readMode = READ_DEFAULT;
             }
             break;
@@ -148,7 +125,7 @@ int execute(vector<int> program) {
         case K:
             if (program[i] != K) {
                 pointer += program[i];
-            } else if (pointer != privateMemory) {
+            } else if (pointer != intPrivateMemory) {
                 readMode = READ_DEFAULT;
             }
             break;
@@ -156,16 +133,16 @@ int execute(vector<int> program) {
         case Ca:
             if (program[i] != Ca) {
                 pointer -= program[i];
-            } else if (pointer != privateMemory) {
+            } else if (pointer != intPrivateMemory) {
                 readMode = READ_DEFAULT;
             }
             break;
         default:
             cout << "Code Error: " << readMode << endl << "Please report to github";
         }
-        if (pointer > intMemory.size() - 1) {
-            for (int i = intMemory.size() - 1; i <= pointer; i++)
-                intMemory.push_back(0);
+        if (pointer > numMemory.size() - 1) {
+            for (int i = numMemory.size() - 1; i <= pointer; i++)
+                numMemory.push_back(0);
                 boolMemory.push_back(false);
                 strMemory.push_back("");
         }

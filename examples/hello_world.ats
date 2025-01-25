@@ -1,0 +1,14 @@
+Ne Hf   # Each element's atomic number after "Ne" gets added to string memory as a character
+Ne Md   # Note that spaces are ignored 
+NeHs
+N e H s
+Ne Rg
+Ne Ru
+Ne Ge
+Ne Fr
+Ne Rg
+Ne Fl
+Ne Hs
+Ne Fm
+Ne As   # This block adds the string "Hello, " to string memory
+C       # "C" prints the string memory

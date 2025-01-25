@@ -1,0 +1,28 @@
+        # The pointer is 0 and the memory is empty by default
+Ne Pt   # Each element's atomic number after "Ne" gets added as a character to string memory 0
+Ne Bk
+Ne Mt
+Ne Md
+Ne Ce   # This block adds the string "Name:" to string memory 0
+C       # Print out the string in string memory 0
+
+Na H    # Sets pointer to 1
+O       # Asks for input and stores it in string memory 1
+
+Mg      # Sets pointer back to 0
+F       # Resets the string memory 0
+Ne Hf
+Ne Md
+Ne Hs
+Ne Hs
+Ne Rg
+Ne Ru
+Ne Ge   # This block adds the string "Hello, " to string memory 0
+C       # Prints it out
+
+Na H    # Sets pointer to 1
+C       # Prints out the user's name, stored in string memory 1
+
+Mg F    # Sets pointer back to 0 and resets the string memory 0
+Ne As   # Adds the characer "!" to string memory 0
+C       # Prints it out

@@ -3,9 +3,8 @@
 #include "vector"
 #include "array"
 #include "ctype.h" // isspace() function
-#include "fstream" // for file reading
-#include "sstream" // "
-#include "ats_interpreter.hpp" // where the array "elements" is
+#include "ats_interpreter.hpp"
+
 using namespace std;
 
 int atomicNum(string input) {
@@ -67,47 +66,4 @@ vector<int> read(string input) {
     }
     for (int i; i < output.size(); i++) if (output[i] == -1) return {-1};
     return output;
-}
-
-string askFile() {
-    string filename;
-    cout << "File Name: ";
-    cin >> filename;
-
-    if (filename == "-") filename = "prog.ats";
-    if (filename.find('.') == string::npos) filename += ".ats";
-
-    ifstream file(filename.c_str());  // Open the file
-    // Check if the file was opened successfully
-    if (!file.is_open()) {
-        cerr << "Error opening file." << endl;
-    }
-    stringstream buffer;
-    buffer << file.rdbuf();  // Read the whole file content into a stringstream
-    string fileStr = buffer.str();  // Get the string content
-    file.close();  // Close the file
-
-    cout << endl;
-    return fileStr;
-}
-
-void exeFile() {
-    int out = execute(read(askFile()));
-    if (out == 0) cout << "\n\nProgram executed successfully";
-    else cout << "\nProgram ended with error " << out;
-}
-
-int main() {
-    exeFile();
-
-    bool quit = false;
-    while (!quit) {
-        cout << "\nType \"run\" to run a program, anything else to quit\n";
-        string in;
-        cin >> in;
-
-        if (in == "run") exeFile();
-        else quit = true;
-    }
-    return 0;
 }
