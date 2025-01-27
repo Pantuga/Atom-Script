@@ -32,7 +32,7 @@ int execute(vector<int> program) {
                 readMode = He;
                 break;
             
-            case Ne: //() "He [...] He H" withput altering numMemory
+            case Ne: // "He [...] He H" withput altering numMemory, uses next value (eg.: "He Bk He H" = "Ne Bk")
                 intPrivateMemory = numMemory[pointer];
                 readMode = Ne;
                 break;
@@ -45,7 +45,7 @@ int execute(vector<int> program) {
                 pointer -= 1;
                 break;
 
-            case Na: //() sets pointer to the value inside
+            case Na: // sets pointer to the next value
                 pointer = 0;
                 readMode = Na;
                 break;
@@ -54,12 +54,12 @@ int execute(vector<int> program) {
                 pointer = 0;
                 break;
 
-            case K: //() increments numMemory[pointer] by numMemory[<number inside>]
+            case K: //() increments numMemory[pointer] by number inside
                 intPrivateMemory = 0;
                 readMode = K;
                 break;
 
-            case Ca: //() decrements numMemory[pointer] by numMemory[<number inside>]
+            case Ca: //() decrements numMemory[pointer] by number inside
                 intPrivateMemory = 0;
                 readMode = Ca;
                 break;
@@ -72,7 +72,7 @@ int execute(vector<int> program) {
                 strMemory[pointer] = "";
                 break;
             
-            case Cl: // v0.0.4 reset the numMemory
+            case Cl: // v0.1 reset the numMemory
                 numMemory[pointer] = 0;
                 break;
 
@@ -93,12 +93,12 @@ int execute(vector<int> program) {
                 cin >> strMemory[pointer];
                 break;
             
-            case Fe: //() v0.0.4 saves the code inside in funcMemory
+            case Fe: //() v0.1 saves the code inside in funcMemory
                 funcMemory[pointer] = {};
                 readMode = Fe;
                 break;
             
-            case Cu: // executes the code in funcMemory
+            case Cu: // v0.1 executes the code in funcMemory
                 execute(funcMemory[pointer]);
                 break;
 
