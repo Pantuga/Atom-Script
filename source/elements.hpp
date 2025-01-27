@@ -4,7 +4,7 @@
 #include "string"
 using namespace std;
 
-const array<string, 119> elements = {
+const array<string, 127> elements = {
     "", "H", "He",
     "Li", "Be", 
     "B", "C", "N", "O", "F", "Ne",
@@ -23,7 +23,8 @@ const array<string, 119> elements = {
     "Fr", "Ra",
     "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr",
     "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn",
-    "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
+    "Nh", "Fl", "Mc", "Lv", "Ts", "Og",
+    "Uue", "Ubn", "Ubu", "Ubb", "Ubt", "Ubq", "Ubp", "Ubh" // for text
 };
 
 enum ElementsIndex {
@@ -45,5 +46,5 @@ enum ElementsIndex {
     Fr, Ra,
     Ac, Th, Pa, U,  Np, Pu, Am, Cm, Bk, Cf, Es, Fm, Md, No, Lr,
     Rf, Db, Sg, Bh, Hs, Mt, Ds, Rg, Cn,
-    Nh, Fl, Mc, Lv, Ts, Og,
+    Nh, Fl, Mc, Lv, Ts, Og
 };

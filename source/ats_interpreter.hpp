@@ -2,8 +2,7 @@
 
 #include "iostream"
 #include "vector"
-#include "array"
-#include "elements.hpp"
+#include "elements.hpp" // enum with all the elements
 using namespace std;
 
 int execute(vector<int> program) {
@@ -11,18 +10,18 @@ int execute(vector<int> program) {
     vector<int> numMemory = {0};
     vector<bool> boolMemory = {false};
     vector<string> strMemory = {""};
+    vector<vector<int>> funcMemory = {{}};
     // position of the vectors to be read
     int pointer = 0;
     int intPrivateMemory;
     string strPrivateMemory;
-    
 
     const int READ_DEFAULT = -1;
     int readMode = READ_DEFAULT; // -1 is default
     for (int i = 0; i < program.size(); i++) {
         switch (readMode) {
         case READ_DEFAULT:
-            switch (program[i]) { // Other syntax errors are handeled by the reader
+            switch (program[i]) { // "//()" means the commands works by enclosing other elements (eg.: He [...] He)
 
             case H: // adds numMemory to strMemory as a character
                 strMemory[pointer] += (char)numMemory[pointer];
@@ -55,13 +54,13 @@ int execute(vector<int> program) {
                 pointer = 0;
                 break;
 
-            case K: //() increments pointer by value inside
-                intPrivateMemory = pointer;
+            case K: //() increments numMemory[pointer] by numMemory[<number inside>]
+                intPrivateMemory = 0;
                 readMode = K;
                 break;
 
-            case Ca: //() decrements pointer by value inside
-                intPrivateMemory = pointer;
+            case Ca: //() decrements numMemory[pointer] by numMemory[<number inside>]
+                intPrivateMemory = 0;
                 readMode = Ca;
                 break;
 
@@ -72,6 +71,10 @@ int execute(vector<int> program) {
             case F: // v0.0.3 resets the strMemory
                 strMemory[pointer] = "";
                 break;
+            
+            case Cl: // v0.0.4 reset the numMemory
+                numMemory[pointer] = 0;
+                break;
 
             case B: // v0.0.3 asks for bool input
                 cin >> strPrivateMemory;
@@ -81,72 +84,103 @@ int execute(vector<int> program) {
                 } else boolMemory[pointer] = true;
                 break;
 
-            case N: // v0.0.3 asks for int input (DANGEROUS!!!)
-                cin >> numMemory[pointer];
+            case N: // v0.0.3 asks for int input (DANGEROUS IF USER INPUT IS BAD!!!)
+                cin >> strPrivateMemory;
+                numMemory[pointer] = stoi(strPrivateMemory);
                 break;
 
-            case O: // asks for string input (works weird)
+            case O: // asks for string input
                 cin >> strMemory[pointer];
                 break;
+            
+            case Fe: //() v0.0.4 saves the code inside in funcMemory
+                funcMemory[pointer] = {};
+                readMode = Fe;
+                break;
+            
+            case Cu: // executes the code in funcMemory
+                execute(funcMemory[pointer]);
+                break;
 
-            default:
-                cout << "\n Syntax Error: The element " << program[i] << " is unused";
-                return -2;
+            case 0:
+                cout << "Error: Program Empty\n";
+                return 404;
+                break;
+            case -1:
+                return 13;
+                break;
+            default:  // Other syntax errors are handeled in reader.hpp
+                cout << "Syntax Error: The element " << program[i] << " is unused\n";
+                return 22;
                 break;
             }
             break;
-
+//------------------------------------------------------------------------------------------------------------
         case He:
             if (program[i] != He) {
                 numMemory[pointer] += program[i];
-            } else if (numMemory[pointer] != 0) {
+            } else {
                 readMode = READ_DEFAULT;
             }
             break;
 
         case Ne:
-            if (program[i] != Ne) {
-                numMemory[pointer] = program[i];
+            numMemory[pointer] = program[i];
+
+            switch (numMemory[pointer]) {
+                case H:
+                    numMemory[pointer] = (int)' ';
+                    break;
+                case He:
+                    numMemory[pointer] = (int)'\n';
+                    break;
             }
-            if (numMemory[pointer] != intPrivateMemory) {
-                strMemory[pointer] += (char)numMemory[pointer];
-                numMemory[pointer] = intPrivateMemory;
-                readMode = READ_DEFAULT;
-            }
+            strMemory[pointer] += (char)numMemory[pointer];
+            numMemory[pointer] = intPrivateMemory;
+            readMode = READ_DEFAULT;
+            
             break;
 
         case Na:
-            if (program[i] != Na) {
-                pointer = program[i];
-            }
-            if (pointer != 0) {
-                readMode = READ_DEFAULT;
-            }
+            pointer = program[i];
+            readMode = READ_DEFAULT;
             break;
 
         case K:
             if (program[i] != K) {
-                pointer += program[i];
-            } else if (pointer != intPrivateMemory) {
+                numMemory[pointer] += program[i];
+            } else {
                 readMode = READ_DEFAULT;
             }
             break;
 
         case Ca:
             if (program[i] != Ca) {
-                pointer -= program[i];
-            } else if (pointer != intPrivateMemory) {
+                numMemory[pointer] -= program[i];
+            } else {
                 readMode = READ_DEFAULT;
             }
             break;
+        
+        case Fe:
+            if (program[i] != Fe) {
+                funcMemory[pointer].push_back(program[i]);
+            } else {
+                readMode = READ_DEFAULT;
+            }
+            break;
+
         default:
-            cout << "Code Error: " << readMode << endl << "Please report to github";
+            cout << "Code Error: Please report to github";
+            return -readMode;
+            break;
         }
-        if (pointer > numMemory.size() - 1) {
-            for (int i = numMemory.size() - 1; i <= pointer; i++)
+        if (pointer >= numMemory.size() - 1) {
+            for (int i = numMemory.size() - 1; i < pointer; i++)
                 numMemory.push_back(0);
                 boolMemory.push_back(false);
                 strMemory.push_back("");
+                funcMemory.push_back({});
         }
     }
     return 0;

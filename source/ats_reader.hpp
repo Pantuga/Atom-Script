@@ -29,43 +29,52 @@ int chartonum(char ch) {
     cout << "Unexpected Error: May cause weird behavior";
     return 0;
 }
+vector<int> read(string input) { // This entire function was made by chat gpt, and yet it does not work as I first inteded. As they say in portuguese, quem não tem cão caça com gato.
+    vector<int> output;       // Holds the atomic numbers of elements
+    string buffer;            // Holds the current element symbol
+    bool isComment = false;   // Tracks if the current line is a comment
+    int tokenMult = 1;        // Default multiplier for elements is 1
 
-vector<int> read(string input) {
-    vector<int> output;
-    string buffer;
-    bool isComment = false;
-    int tokenMult = 1;
-
-    for (int i = 0; i < input.size(); i++) {
-        if (input[i] == '#') isComment = true;
+    for (size_t i = 0; i < input.size(); i++) {
+        if (input[i] == '#') { // Start of a comment
+            isComment = true;
+        }
 
         if (!isComment) {
-            if (isupper(input[i]) && buffer != "") {
-                for (int i = 0; i < tokenMult; i++) {
-                    output.push_back(atomicNum(buffer));
+            if (isnum(input[i])) { // Detect a number prefix
+                if (tokenMult == 1) tokenMult = 0; // Reset multiplier when starting a new number
+                tokenMult = tokenMult * 10 + chartonum(input[i]); // Build the multiplier
+            } else if (isupper(input[i])) { // Start of an element symbol
+                // Process the previous element, applying the multiplier
+                if (!buffer.empty()) {
+                    int elementNum = atomicNum(buffer);
+                    if (elementNum != -1) {
+                        for (int j = 0; j < tokenMult; j++) {
+                            output.push_back(elementNum);
+                        }
+                    }
+                    tokenMult = 1; // Reset multiplier after applying
                 }
-                tokenMult = 1;
-                buffer = "";
+                buffer = input[i]; // Start a new element symbol
+            } else if (islower(input[i])) { // Continue building the element symbol
                 buffer += input[i];
-            } else if (!isspace(input[i])) {
-                if (isnum(input[i]) && buffer != "") {
-                    for (int i = 0; i < tokenMult; i++) {
-                        output.push_back(atomicNum(buffer));
-                    }
-                    buffer = "";
-                    if (tokenMult != 1) {
-                        tokenMult *= 10;
-                        tokenMult += chartonum(input[i]);
-                    } else {
-                        tokenMult = chartonum(input[i]);
-                    }
-                } else buffer += input[i];
             }
-        } else if (isComment && input[i] == '\n') isComment = false;
+        }
+
+        if (input[i] == '\n') { // End of a comment
+            isComment = false;
+        }
     }
-    for (int i = 0; i < tokenMult; i++) {
-        output.push_back(atomicNum(buffer));
+
+    // Process the last element in the buffer
+    if (!buffer.empty()) {
+        int elementNum = atomicNum(buffer);
+        if (elementNum != -1) {
+            for (int j = 0; j < tokenMult; j++) {
+                output.push_back(elementNum);
+            }
+        }
     }
-    for (int i; i < output.size(); i++) if (output[i] == -1) return {-1};
+
     return output;
 }

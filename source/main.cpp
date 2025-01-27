@@ -33,7 +33,7 @@ char getch() {
 }
 #endif
 
-string askFile(string infilename = "") {
+string openFile(string infilename = "") {
     string filename;
     if (infilename == "") {
         cout << "File Name: ";
@@ -46,7 +46,7 @@ string askFile(string infilename = "") {
     ifstream file(filename.c_str());  // Open the file
     // Check if the file was opened successfully
     if (!file.is_open()) {
-        cerr << "Error opening file." << endl;
+        cerr << "Error opening file.\n";
     }
     stringstream buffer;
     buffer << file.rdbuf();  // Read the whole file content into a stringstream
@@ -58,10 +58,10 @@ string askFile(string infilename = "") {
 }
 
 void exeFile(string filename = "") {
-    int out = execute(read(askFile(filename)));
+    int out = execute(read(openFile(filename)));
     
     if (out == 0) cout << "\n\nProgram executed successfully.";
-    else cout << "\nProgram ended with error: " << out;
+    else cout << "Program ended with error: " << out;
 }
 
 int main(int argc, char* argv[]) {
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
     } else {
         exeFile(argv[1]);
     }
-
+    cout << "\nPress any key to exit";
     getch();
     return 0;
 }
