@@ -10,5 +10,5 @@ Ne Rg
 Ne Fl
 Ne Hs
 Ne Fm
-Ne As   # This block adds the string "Hello, " to string memory
+Ne As   # This block adds the string "Hello, World" to string memory
 C       # "C" prints the string memory
